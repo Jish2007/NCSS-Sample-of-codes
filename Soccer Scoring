@@ -1,0 +1,6 @@
+commentary = open("commentary.txt").readlines()
+team1, team2 = commentary[0].strip().split(" versus ")
+goals = "".join(commentary[1:])
+goals = [(team1, goals.count(team1)), (team2, goals.count(team2))]
+goals.sort(key=lambda team: team[1], reverse=True)
+print("%s %s\n%s %s" % (goals[0][0], goals[0][1], goals[1][0], goals[1][1]))
