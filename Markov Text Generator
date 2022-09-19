@@ -1,0 +1,59 @@
+import random
+
+
+def generate_sentence(start_token, filenames):
+  # TODO
+  bigrams = {}
+  
+  for filename in filenames:
+    file = open(filename)
+    text = file.read().lower()
+    get_bigrams(text, bigrams)
+    file.close()
+  
+  token = start_token.lower()
+  sentence = token
+  for i in range(199):
+    if token not in bigrams:
+      break
+    possible_next_tokens = bigrams[token]
+    token = random.choice(possible_next_tokens)
+    sentence += " " + token
+    if token == ".":
+      break
+  
+  return sentence
+
+def get_bigrams(line, bigrams):
+  words = line.split()
+  for i in range(0,len(words)-1):
+    word = words[i]
+    if word in bigrams:
+      bigrams[word].append(words[i+1])
+    else:
+      bigrams[word] = [words[i+1]]
+
+
+if __name__ == '__main__':
+  # The random number generator is initialised to zero here purely
+  # for your own testing so that each time you run your code during
+  # development, you will get the same output. Remove this to get 
+  # different output each time you run your code with the same input.
+  random.seed(0)
+  
+  # Run the examples in the question.
+  for i in range(4):
+    print(generate_sentence('There', ['single.txt']))
+  print('=' * 80)
+  for i in range(4):
+    print(generate_sentence('the', ['jab.txt']))
+  print('=' * 80)
+  for i in range(4):
+    print(generate_sentence('It', ['dracula.txt', 'pandp.txt']))
+  print('=' * 80)
+  for i in range(10):
+    print(generate_sentence('Once', ['dracula.txt', 'jb.txt', 'pandp.txt', 'totc.txt']))
+  print('=' * 80)
+  for i in range(8):
+    print(generate_sentence('cat', ['single.txt', 'textwraps.txt']))
+  print('=' * 80)
