@@ -1,0 +1,8 @@
+num = input("Number: ")
+num_count = ""
+for i in range(10):
+  num_count += str(num.count(str(i)))
+if num_count.startswith(num):
+  print("%s is autobiographical." % num)
+else:
+  print("%s is not autobiographical." % num)
