@@ -1,0 +1,66 @@
+def author_rankings(thread_list):
+  # TODO: Determine (author, upvotes, ranking) over all threads.
+  authors_upvotes = {}
+  for thread in thread_list:
+    get_thread_author_upvotes(authors_upvotes, thread)
+  authors_upvotes = sort_dict(authors_upvotes, isvalue=0)
+  authors_upvotes = sort_dict(authors_upvotes, reverse=True)
+  report = []
+  for author, upvotes in authors_upvotes.items():
+    report.append(get_status(author, upvotes))
+  return report
+
+def sort_dict(x, reverse=False, isvalue=1):
+  return {k: v for k, v in sorted(x.items(), key=lambda item: item[isvalue], reverse=reverse)}
+
+def get_status(author, upvotes):
+  if upvotes == 0:
+    ranking = 'Insignificantly Evil'
+  elif upvotes < 20:
+    ranking = 'Cautiously Evil'
+  elif upvotes < 100:
+    ranking = 'Justifiably Evil'
+  elif upvotes < 500:
+    ranking = 'Wickedly Evil'
+  else:
+    ranking = 'Diabolically Evil'
+  return (author, upvotes, ranking)
+    
+def get_thread_author_upvotes(authorUpvotes, thread):
+  for post in thread["posts"]:
+    update(authorUpvotes, post)
+      
+def update(authorUpvotes, post):
+  author = post["author"]
+  upvotes = post["upvotes"]
+  if author in authorUpvotes:
+    authorUpvotes[author] += upvotes
+  else:
+    authorUpvotes[author] = upvotes
+
+
+if __name__ == '__main__':
+  # Example calls to your function.
+  print(author_rankings([
+    {
+        'title': 'Invade Manhatten, anyone?',
+        'tags': ['world-domination', 'hangout'],
+        'posts': [
+            {
+                'author': 'Mr. Sinister',
+                'content': "I'm thinking 9 pm?",
+                'upvotes': 2,
+            },
+            {
+                'author': 'Mystique',
+                'content': "Sounds fun!",
+                'upvotes': 0,
+            },
+            {
+                'author': 'Magneto',
+                'content': "I'm in!",
+                'upvotes': 0,
+            },
+        ],
+    }
+  ]))
