@@ -1,0 +1,46 @@
+def interleavings(a, b):
+    if a and b:
+        return sorted(update(a, b) + (update(b, a)))
+    elif a:
+        return update(a, b)
+    elif b:
+        return update(b, a)
+    else:
+        return [""]
+
+
+def update(a, b):
+    return [a[0] + x for x in interleavings(a[1:], b)]
+  
+if __name__ == '__main__':
+    # Run the examples in the question.
+    print(interleavings('a', 'b'))
+    result = interleavings('ab', 'cd')
+    print(result)
+    result = interleavings('a', 'cd')
+    print(result)
+    result = interleavings('1234567890', 'abcdefgjkl')
+    print(result)
+def interleavings(a, b):
+  if a and b:
+      return sorted(update(a, b) + (update(b, a)))
+  elif a:
+      return update(a, b)
+  elif b:
+      return update(b, a)
+  else:
+      return [""]
+
+
+def update(a, b):
+    return [a[0] + x for x in interleavings(a[1:], b)]
+  
+if __name__ == '__main__':
+    # Run the examples in the question.
+    print(interleavings('a', 'b'))
+    result = interleavings('ab', 'cd')
+    print(result)
+    result = interleavings('a', 'cd')
+    print(result)
+    result = interleavings('1234567890', 'abcdefgjkl')
+    print(result)
