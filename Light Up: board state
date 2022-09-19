@@ -1,0 +1,130 @@
+def board_is_happy(board):
+  status = "happy"
+  new_board = []
+  for line in board:
+    new_line, status = get_light(line, status)
+    new_board.append(new_line)
+    if status == "unhappy":
+      return False
+  board = new_board
+  for i in range(len(board)):
+    column = "".join([line[i] for line in board])
+    column, status = get_light(column, status)
+    if status == "unhappy":
+      return False
+  return True  # TODO
+
+def get_light(line, status):
+  for char_index in range(len(line)):
+    char = line[char_index]
+    if char == "L":
+      line, status = light(line, char_index, status)
+      line, status = light(line, char_index, status, forward=False)
+    elif char.isdigit():
+      new_char = char
+      if char_index != 0 and line[char_index-1] == "L":
+        new_char = str(int(new_char)-1)
+        if new_char == "-1":
+          status = "unhappy"
+        else:
+          line = line[:char_index] + new_char + line[char_index + 1:]
+      if char_index != len(line)-1:
+        if line[char_index+1] == "L":
+          new_char = str(int(new_char)-1)
+          if new_char == "-1":
+            status = "unhappy"
+          else:
+            line = line[:char_index] + new_char + line[char_index + 1:]
+  return line, status
+
+def light(line, char_index, status, forward=True):
+  if forward:
+    to_check = range(char_index+1, len(line))
+  else:
+    to_check = range(char_index-1, -1, -1)
+  for i in to_check:
+    new_value = check(line[i])
+    if not new_value:
+      status = "unhappy"
+      break
+    elif new_value == "break":
+      break
+    else:
+      line = line[:i] + new_value + line[i + 1:]
+  return line, status
+        
+    
+def check(char, forward=True):
+  if char == ".":
+    return "y"
+  elif char == "L":
+    return False
+  elif char == "X" or char.isdigit():
+    return "break"
+  else:
+    return char
+
+
+def board_is_solved(board):
+  status = "happy"
+  new_board = []
+  for line in board:
+    new_line, status = get_light(line, status)
+    new_board.append(new_line)
+  board = new_board
+  new_board = []
+  for i in range(len(board)):
+    column = "".join([line[i] for line in board])
+    column, status = get_light(column, status)
+    new_board.append(column)
+ # print("\n".join(new_board))
+  if any([char in ".123456789" for char in "".join(new_board)]):
+    return False
+  return True  # TODO
+
+
+def get_board_state(board):
+  if board_is_happy(board):
+    if board_is_solved(board):
+      return 'solved'
+    else:
+      return 'happy'
+  else:
+    return 'unhappy'
+
+
+if __name__ == '__main__':
+  # Example board, happy state.
+  print(get_board_state('''
+...1.0.
+X......
+..X.X..
+X...L.X
+..X.3..
+.L....X
+L3L2...'''.strip().split('\n')))
+  # Example board, solved state.
+  print(get_board_state('''
+..L1.0.
+X...L..
+L.X.X.L
+X...L.X
+..XL3L.
+.L....X
+L3L2L..'''.strip().split('\n')))
+  # Example board, unhappy state.
+  print(get_board_state('''
+L..1L0.
+X.L....
+L.X.X.L
+X...L.X
+..XL3L.
+.L....X
+L3L2L..'''.strip().split('\n')))
+  # Different board, happy state.
+  print(get_board_state('''
+L1.L.
+..L3L
+..X1.
+.1...
+.....'''.strip().split('\n')))
