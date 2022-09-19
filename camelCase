@@ -1,0 +1,15 @@
+def to_camel(ident):
+  # TODO implement this function.
+  ident, *words = ident.split("_")
+  for word in words:
+    word = word[0].upper()+word[1:]
+    ident += word
+  return ident
+
+
+if __name__ == '__main__':
+  # Run the example inputs in the question.
+  print(to_camel('foo'))
+  print(to_camel('raw_input'))
+  print(to_camel('num2words'))
+  print(to_camel('num_to_SMS'))
