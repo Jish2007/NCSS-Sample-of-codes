@@ -1,0 +1,14 @@
+def remove_vowels(string):
+  vowels = "AEIOUaeiou"
+  for vowel in vowels:
+    string = string.replace(vowel, "")
+  return string
+def novowelsort(the_list):
+  # TODO perform no vowel sort on `the_list`.
+  the_list.sort(key=remove_vowels)
+  return the_list
+
+if __name__ == '__main__':
+  # Example calls to your function.
+  print(novowelsort(['alpha', 'beta']))
+  print(novowelsort(['once', 'upon', 'abc', 'time', 'there', 'were', 'some', 'words']))
