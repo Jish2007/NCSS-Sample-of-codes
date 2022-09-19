@@ -40,7 +40,5 @@ if __name__ == '__main__':
     print(interleavings('a', 'b'))
     result = interleavings('ab', 'cd')
     print(result)
-    result = interleavings('a', 'cd')
-    print(result)
     result = interleavings('1234567890', 'abcdefgjkl')
     print(result)
