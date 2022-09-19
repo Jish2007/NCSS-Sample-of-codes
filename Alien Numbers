@@ -1,0 +1,42 @@
+letterNum = {
+  "a": 0,
+  "e": 1,
+  "i": 2,
+  "o": 3,
+  "u": 4
+}
+
+def alien2float(string):
+  i = 0 
+  first_digits = []
+  second_digits = []
+  while i < len(string) and string[i].isupper():
+    digit = letterNum[string[i].lower()]
+    first_digits.append(digit)
+    i += 1
+  first_digits.reverse()
+  num = addBases(first_digits)
+  
+  while i < len(string) and string[i].islower():
+    digit = letterNum[string[i].lower()]
+    second_digits.append(digit)
+    i += 1
+  num += addBases(second_digits, mult=-1, offset=1)
+  if i != len(string):
+    return None
+  else:
+    return num
+
+def addBases(digits, mult=1, offset=0):
+  num = 0
+  for i in range(len(digits)):
+    digit = digits[i]
+    num += digit*5**((i+offset)*mult)
+  return num
+
+
+if __name__ == '__main__':
+  # Run the examples in the question.
+  print(repr(alien2float('IU')))
+  print(repr(alien2float('OUAooea')))
+  print(repr(alien2float('iuAE')))
