@@ -1,0 +1,36 @@
+def get_book(books_to_people, names):
+  read = input("Book read: ")
+  if read:
+    book, person = read.split(":")
+    if book in books_to_people:
+      books_to_people[book].append(person)
+    else:
+      books_to_people[book] = [person]
+    if person not in names:
+      names.append(person)
+    return True
+  else:
+    return False
+  
+def get_unread(bks_ppl, names):
+  for book in bks_ppl:
+    bks_ppl[book] = sorted([person for person in names if person not in bks_ppl[book]])
+
+
+def init():
+  books_to_people = {}
+  names = []
+  entering = get_book(books_to_people, names)
+  while entering:
+    entering = get_book(books_to_people, names)
+  get_unread(books_to_people, names)
+  
+  for book in sorted(books_to_people.keys()):
+    if books_to_people[book]:
+      people = ", ".join(books_to_people[book])
+    else:
+      people = "Everyone has read this!"
+    print("%s: %s" % (book, people))
+
+if __name__ == "__main__":
+  init()
