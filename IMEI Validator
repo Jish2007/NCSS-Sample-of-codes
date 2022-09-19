@@ -1,0 +1,34 @@
+num = input('Enter number: ')
+intnum = int(num)
+newlist = []
+newlist2 = []
+newlist3 = []
+newlist4 = []
+newlist5 = []
+total = 0
+total1 = 0
+for i in num:
+  newlist.append(i)
+newlist1 = newlist[:-1]
+newlist4 = newlist1[::2]
+for i in newlist1[::-2]:
+  j = int(i)
+  j = j*2
+  y = str(j)
+  for i in y:
+    newlist2.append(i)
+for i in newlist2:
+  k = int(i)
+  newlist3.append(k)
+for i in newlist4:
+  m = int(i)
+  newlist5.append(m)
+for ele in range(0, len(newlist3)):
+    total = total + newlist3[ele]
+for ele in range(0, len(newlist5)):
+    total1 = total1 + newlist5[ele]
+z = int(newlist[-1])
+if (total + total1 + z) % 10 == 0:
+  print('Valid.')
+else:
+  print('Invalid.')
