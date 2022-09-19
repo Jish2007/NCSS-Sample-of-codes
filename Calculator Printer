@@ -1,0 +1,65 @@
+class Digit:
+  def __init__(self, width, num):
+    self.width = width
+    self.generate_lines()
+    self.values = {
+      1: "02020",
+      2: "12111",
+      3: "12121",
+      4: "03120",
+      5: "11121",
+      6: "11131",
+      7: "12020",
+      8: "13131",
+      9: "13121",
+      0: "13031"
+    }
+    self.shape = self.generate_shape(self.values[num])
+    self.num = num
+    
+  def generate_lines(self):
+      self.hor = [" " + " "*self.width + " ",
+             " " + "-"*self.width + " "]
+      self.vert = [" " + " "*self.width + " ", 
+              "|" + " "*self.width + " ", 
+              " " + " "*self.width + "|",  
+              "|" + " "*self.width + "|"]
+    
+  def generate_shape(self, char):
+    shape = [self.hor[int(char[0])]]
+    for i in range(self.width):
+      shape.append(self.vert[int(char[1])])
+    shape.append(self.hor[int(char[2])])
+    for i in range(self.width):
+      shape.append(self.vert[int(char[3])])
+    shape.append(self.hor[int(char[4])])
+    return shape
+  
+  def __str__(self):
+    return "\n".join(self.shape)
+    
+
+def translate(number, width):
+  s_num = str(number)
+  digits = []
+  for char in s_num:
+    digits.append(Digit(width, int(char)))
+  return digits
+    
+def stringify(digits):
+  lines = []
+  for i in range(len(digits[0].shape)):
+    shape_line = map(lambda d: d.shape[i], digits)
+    shape_line = " ".join(shape_line)
+    lines.append(shape_line)
+  return "\n".join(lines)    
+
+def init():
+  num = int(input("Number: "))
+  width = int(input("Width: "))
+  digits = translate(num, width)
+  string = stringify(digits)
+  print(string)
+  
+if __name__ == "__main__":
+  init()
