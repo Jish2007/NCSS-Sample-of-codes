@@ -1,0 +1,140 @@
+SUPER_NUMS = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹']
+SUB_NUMS = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉']
+import random
+
+
+def gcd(a, b):
+  """
+  Returns the Greatest Common Divisor between `a` and `b`.
+  """
+  while b:
+    a, b = b, a % b
+  return a
+
+
+class Rational:
+  """
+  Represents any rational number in fraction form.
+  """
+  
+  def __init__(self, numerator, denominator=1):
+    """
+    Initialises a rational number with the given numerator and denominator.
+    """
+    # TODO implement this method.
+    self.has_decimal = True
+    self.improper = (numerator, denominator)
+    self.numerator = numerator
+    self.denominator = denominator
+    self.integer = 0
+    self.values = self._proper_fraction()
+    
+  def simplify(self):
+    to_divide = gcd(self.numerator, self.denominator)
+    n = int(self.numerator / to_divide)
+    d = int(self.denominator / to_divide)
+    return n, d
+    
+  def _proper_fraction(self):
+    n, d = self.simplify()
+    abs_n = abs(n)
+
+    while abs_n >= d:
+      self.integer += 1
+      abs_n -= d
+    
+    if abs_n == 0:
+      self.has_decimal = False
+    
+    if n < 0:
+      if self.integer == 0:
+        abs_n *= -1
+      else:
+        self.integer *= -1
+      
+    return self.integer, abs_n, d    
+    
+  def __eq__(self, other):
+    """
+    Returns True if the two given Rational numbers are equal.
+    """
+    # TODO implement this method.
+    return self.values == other.values
+  
+  @staticmethod
+  def special_num(number, font):
+    fonted_num = ""
+    for digit in str(number):
+      if digit.isdigit():
+        fonted_num += font[int(digit)]
+      else:
+        fonted_num += digit
+    return fonted_num
+
+  def __str__(self):
+    """
+    Returns a string representing this Rational number.
+    """
+    # TODO implement this method.
+    if self.integer == 0 and self.has_decimal:
+      integer = ""
+    else:
+      integer = str(self.integer)
+    if self.has_decimal:
+      n = self.values[1]
+      d = self.values[2]
+      numerator = self.special_num(n, SUPER_NUMS)
+      denominator = self.special_num(d, SUB_NUMS)
+      string = "{}{}/{}".format(integer, numerator, denominator)
+    else:
+      string = integer
+    return string
+  
+  def __add__(self, other):
+    """
+    Returns the addition (+) of two Rational numbers.
+    """
+    # TODO implement this method.
+    n = self.numerator*other.denominator + other.numerator*self.denominator
+    d = self.denominator*other.denominator
+    return Rational(n, d)
+  
+  def __mul__(self, other):
+    """
+    Returns the multiplication (*) of two Rational numbers.
+    """
+    # TODO implement this method.
+    n = self.numerator * other.numerator
+    d = self.denominator * other.denominator
+    return Rational(n, d)
+
+  def __sub__(self, other):
+    """
+    Returns self minus (-) other of two Rational numbers.
+    """
+    # TODO implement this method.
+    n = self.numerator*other.denominator - other.numerator*self.denominator
+    d = self.denominator*other.denominator
+    return Rational(n, d)
+  
+  def __truediv__(self, other):
+    """
+    Returns self divided by (/) other.
+    """
+    # TODO implement this method.
+    n = self.numerator * other.denominator
+    d = self.denominator * other.numerator
+    return Rational(n, d)
+
+
+def test_rational():
+  """
+  Put your own tests here.
+  This function will never be called during marking.
+  """
+  print(Rational(0, 4))
+  print(Rational(8, 4))
+  for i in range(10):
+    num = random.randint(0, 10)
+    den = random.randint(1, 10)
+    print(Rational(num, den))
