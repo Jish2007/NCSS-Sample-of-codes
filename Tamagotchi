@@ -1,0 +1,92 @@
+from tamagotchi import Tamagotchi as tamago
+
+class Tamagotchi(tamago):
+  def __init__(self, name):
+    super().__init__(name)
+    self._name = name
+  
+  def name(self):
+    return self._name
+
+TAMAGOTCHIS = {}
+NO_NAME = "No Tamagotchi with that name."
+BAD_COMMAND = "Invalid command."
+DUPLICATE = "You already have a Tamagotchi called that."
+
+def get_tamagotchi_by_name(name):
+  if not name or name not in TAMAGOTCHIS:
+    print(NO_NAME)
+    return 
+  else:
+    return TAMAGOTCHIS[name]
+  
+def sort_dict(dic):
+  new_dict = {}
+  for key in sorted(dic.keys()):
+    new_dict[key] = dic[key]
+  return new_dict
+
+def print_default():
+  global TAMAGOTCHIS
+  TAMAGOTCHIS = sort_dict(TAMAGOTCHIS)
+  for name in TAMAGOTCHIS:
+    print(TAMAGOTCHIS[name])
+
+
+def feed(name):
+  tamagotchi = get_tamagotchi_by_name(name)
+  if tamagotchi:
+    wait(None)
+    tamagotchi.feed()
+    print_default()
+  else:
+    return
+  
+
+def create(name):
+  if name in TAMAGOTCHIS and not get_tamagotchi_by_name(name).is_dead():
+      print(DUPLICATE)
+      return
+  
+  wait(None)
+  TAMAGOTCHIS[name] = Tamagotchi(name)
+  print_default()
+  
+
+def play(name):
+  tamagotchi = get_tamagotchi_by_name(name)
+  if tamagotchi:
+    wait(None)
+    tamagotchi.play()
+    print_default()
+  else:
+    return
+
+def wait(name):
+  for key in TAMAGOTCHIS:
+    TAMAGOTCHIS[key].increment_time()
+  if name is not None:
+    print_default()
+
+def get_input():
+  return input("Command: ").split()
+
+def init():
+  commands = {
+    "feed": feed,
+    "play": play,
+    "create": create,
+    "wait": wait
+  }
+  ipt = get_input()
+  while ipt:
+    command, *name = ipt
+    name = " ".join(name)
+    if command in commands:
+      commands[command](name)
+    else:
+      print(BAD_COMMAND)
+    ipt = get_input()
+    
+if "__main__" == __name__:
+   init()
